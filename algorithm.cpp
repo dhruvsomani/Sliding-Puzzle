@@ -1,7 +1,6 @@
 #include <iostream>
 #include <algorithm>
 #include <string>
-#include <queue>
 #include <vector>
 #include <map>
 #include <cmath>
@@ -20,11 +19,8 @@ int main() {
     string state;
     getline(cin, state);
 
-    vector<string> neighbors = findNeighbors(state);
-    for (int index = 0; index < neighbors.size(); index++) cout << neighbors[index] << endl;
-
     vector<string> solution = solvePuzzle(state);
-    cout << "Solution: *****" << endl;
+    cout << "Solution:" << endl;
     for (int index = 0; index < solution.size(); index++) cout << solution[index] << endl;
 
     return 0;
