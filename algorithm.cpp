@@ -62,9 +62,7 @@ vector<string> solvePuzzle(string state) {
         cout << endl;
         */
 
-        string final = "123456780";
-
-        if (curr_state == final) {
+        if (curr_state == "12345678 ") {
             vector<string> path = reconstructPath(cameFrom, curr_state);
             return path;
         }
@@ -127,12 +125,13 @@ vector<string> reconstructPath(map<string, string> cameFrom, string current) {
 float calcfScore(string state) {
 
     float fScore = 0;
-    string final = "123456780";
+    string final = "12345678 ";
 
-    for (int index = 0; index < 9; index++) {
-        int loc = state.find(final[index]);
+    for (int index = 1; index < 9; index++) {
+        index = index % 9;
+        int loc = state.find(final[(index-1)%9]);
 
-        fScore += abs((index)%3 - loc%3) + abs(static_cast<int>((index + 1 - 2)/3) - static_cast<int>((loc - 1)/3));
+        fScore += abs((index)%3 - loc%3) + abs(static_cast<int>((index - 1 - 2)/3) - static_cast<int>((loc - 1)/3));
 
     }
 
