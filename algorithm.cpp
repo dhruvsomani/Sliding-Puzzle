@@ -128,7 +128,7 @@ float calcfScore(string state) {
     string final = "12345678 ";
 
     for (int index = 1; index < 9; index++) {
-        index = index % 9;
+        
         int loc = state.find(final[(index-1)%9]);
 
         fScore += abs((index)%3 - loc%3) + abs(static_cast<int>((index - 1 - 2)/3) - static_cast<int>((loc - 1)/3));
