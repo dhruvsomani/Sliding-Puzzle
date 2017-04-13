@@ -4,6 +4,7 @@ Author: Dhruv Somani and Khush Jain
 */
 
 #include <iostream>
+#include <sstream>
 #include <algorithm>
 #include <string>
 #include <vector>
@@ -17,17 +18,19 @@ vector<string> solvePuzzle(string state);
 vector<string> reconstructPath(map<string, string> cameFrom, string current);
 vector<string> findNeighbors(string state);
 float calcfScore(string state);
-bool isSolved(string state, string finalState);
+string to_string(int i);
 
 int main() {
 
     // For Testing Purposes, otherwise we don't need this function
+
     string state;
     getline(cin, state);
 
     vector<string> solution = solvePuzzle(state);
     cout << "Solution:" << endl;
     for (int index = 0; index < solution.size(); index++) cout << solution[index] << endl;
+
 
     return 0;
 }
@@ -62,6 +65,7 @@ vector<string> solvePuzzle(string state) {
         visited.push_back(curr_state);
 
         // DEBUGGING
+
         /*
         cout << endl << curr_state << endl;// << "Visited: ";
         //for (int index = 0; index < visited.size(); index++) cout << visited[index];
@@ -70,8 +74,11 @@ vector<string> solvePuzzle(string state) {
         cout << endl;
         */
 
-        if (curr_state == "12345678 ") {
+        if (curr_state == "123456780") {
             vector<string> path = reconstructPath(cameFrom, curr_state);
+
+            cout << "No. of fScore's Taken: " << fScore.size() << endl;
+
             return path;
         }
 
@@ -98,8 +105,8 @@ vector<string> solvePuzzle(string state) {
 
             // This path is the best until now. Record it!
             cameFrom[neighbor] = curr_state;
-            fScore[neighbor] = calcfScore(neighbor);
             gScore[neighbor] = gScore[curr_state] + 1;
+            fScore[neighbor] = calcfScore(neighbor) + gScore[neighbor];
 
         }
 
@@ -107,7 +114,7 @@ vector<string> solvePuzzle(string state) {
         // mapping >>>>>>>>>>>>>>>>>>>>>>>>>>>
         //for (std::map<string,float>::iterator it=fScore.begin(); it!=fScore.end(); ++it) {
         //    std::cout << it->first << " => " << it->second << '\n';}
-
+        //cout << endl;
     }
 
     return vector<string>();
@@ -133,13 +140,14 @@ vector<string> reconstructPath(map<string, string> cameFrom, string current) {
 float calcfScore(string state) {
 
     float fScore = 0;
-    string final = "12345678 ";
+    string finalState = "123456780";
 
     for (int index = 1; index < 9; index++) {
-        index = index % 9;
-        int loc = state.find(final[(index-1)%9]);
+        int req_loc = finalState.find(to_string(index));
+        int loc = state.find(to_string(index));
+        //cout << index << req_loc << loc << endl;
 
-        fScore += abs((index)%3 - loc%3) + abs(static_cast<int>((index - 1 - 2)/3) - static_cast<int>((loc - 1)/3));
+        fScore += abs(req_loc % 3 - loc % 3) + abs(static_cast<int>(req_loc/3) - static_cast<int>(loc/3));
 
         for (int smallIndex = (index - 1 - ((index - 1) % 3)); smallIndex < (index - 1 - ((index - 1) % 3)) + 3; smallIndex++) {
 
@@ -150,6 +158,7 @@ float calcfScore(string state) {
 
         }
 
+
     }
 
     return fScore;
@@ -159,33 +168,33 @@ float calcfScore(string state) {
 vector<string> findNeighbors(string state) {
 
     vector<string> neighbors;
-    int index = state.find(' ');
+    int index = state.find('0');
 
     if (index % 3 < 2) {
         string temp_state = state;
         temp_state[index] = state[index + 1];
-        temp_state[index + 1] = ' ';
+        temp_state[index + 1] = '0';
         neighbors.push_back(temp_state);
     }
 
     if (index % 3 > 0) {
         string temp_state = state;
         temp_state[index] = state[index - 1];
-        temp_state[index - 1] = ' ';
+        temp_state[index - 1] = '0';
         neighbors.push_back(temp_state);
     }
 
     if (index > 2) {
         string temp_state = state;
         temp_state[index] = state[index - 3];
-        temp_state[index - 3] = ' ';
+        temp_state[index - 3] = '0';
         neighbors.push_back(temp_state);
     }
 
     if (index < 6) {
         string temp_state = state;
         temp_state[index] = state[index + 3];
-        temp_state[index + 3] = ' ';
+        temp_state[index + 3] = '0';
         neighbors.push_back(temp_state);
     }
 
@@ -193,9 +202,9 @@ vector<string> findNeighbors(string state) {
 
 }
 
-bool isSolved(string state, string finalState) {
-
-    if (state == finalState) return true;
-    else return false;
-
+string to_string(int i)
+{
+    stringstream ss;
+    ss << i;
+    return ss.str();
 }
