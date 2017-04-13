@@ -46,7 +46,6 @@ vector<string> solvePuzzle(string state) {
 
     frontier.push_back(state);
 
-
     map<string, float> fScore;
     map<string, int> gScore;
     gScore[state] = 0;
@@ -54,10 +53,14 @@ vector<string> solvePuzzle(string state) {
     while (frontier.size() > 0) {
 
         int best_choice = 0;
-        float minimum = 100;
+        float minimum = 120;
 
         for (int index = 0; index < frontier.size(); index++) {
-            if (fScore[frontier[index]] > minimum) best_choice = index;
+            if (fScore[frontier[index]] < minimum) {
+                    best_choice = index;
+                    minimum = fScore[frontier[index]];
+            }
+
         }
 
         string curr_state = frontier[best_choice];
@@ -70,7 +73,7 @@ vector<string> solvePuzzle(string state) {
         cout << endl << curr_state << endl;// << "Visited: ";
         //for (int index = 0; index < visited.size(); index++) cout << visited[index];
         cout << endl << "Frontier: ";
-        for (int index = 0; index < frontier.size(); index++) cout << frontier[index];
+        for (int index = 0; index < frontier.size(); index++) cout << frontier[index] << " ";
         cout << endl;
         */
 
@@ -157,7 +160,6 @@ float calcfScore(string state) {
             if ((smallIndex > index) & (state[smallIndex] < state[index]) & (state[smallIndex] > (index - 1 - ((index - 1) % 3)))) fScore += 2;
 
         }
-
 
     }
 
