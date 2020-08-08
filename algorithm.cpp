@@ -32,15 +32,6 @@ int main() {
 
     string state = "123740865";
 
-    /*
-    vector<string> solution = solve8Puzzle(state);
-    cout << "Solution:" << endl;
-    for (unsigned int index = 0; index < solution.size(); index++) cout << solution[index].substr(0, 3) << endl
-                << solution[index].substr(3, 3) << endl
-                << solution[index].substr(6, 3) << endl << endl;
-    */
-
-
     vector<string> solution = solve8Puzzle(state);
     cout << "Solution:" << endl;
     for (int index = 0; index < solution.size(); index++) cout << solution[index].substr(0, 3) << endl
@@ -87,15 +78,6 @@ vector<string> solve8Puzzle(string state) {
         frontier.erase(frontier.begin() + best_choice);
         visited.push_back(curr_state);
 
-        // DEBUGGING
-
-        /*
-        cout << endl << curr_state;
-        cout << endl << "Frontier: ";
-        for (int index = 0; index < frontier.size(); index++) cout << frontier[index] << " ";
-        cout << endl;
-        */
-
         if (curr_state == "123456780") {
             vector<string> path = reconstructPath(cameFrom, curr_state);
 
@@ -135,7 +117,6 @@ vector<string> reconstructPath(map<string, string> cameFrom, string current) {
     totalPath.push_back(current);
 
     while (cameFrom.find(current) != cameFrom.end()) {
-
         current = cameFrom[current];
         totalPath.insert(totalPath.begin(), current);
     }
@@ -144,14 +125,11 @@ vector<string> reconstructPath(map<string, string> cameFrom, string current) {
 
 }
 
-int calc8fScore(string state)
-{
-
+int calc8fScore(string state) {
     int fScore = 0;
     string finalState = "123456780";
 
-    for (int index = 1; index < 9; index++)
-    {
+    for (int index = 1; index < 9; index++) {
         int req_loc = index - 1;
         int loc = state.find(finalState[index - 1]);
 
@@ -162,13 +140,10 @@ int calc8fScore(string state)
 
             if ((smallIndex < index) & (state[smallIndex] != '0') & (state[smallIndex] > state[index - 1]) & (state[smallIndex] < (index - 1 - ((index - 1) % 3)) + 3)) fScore += 2;
             if ((smallIndex > index) & (state[smallIndex] != '0') & (state[smallIndex] < state[index - 1]) & (state[smallIndex] > (index - 1 - ((index - 1) % 3)))) fScore += 2;
-
         }
-
     }
-
+    
     return fScore;
-
 }
 
 vector<string> find8Neighbors(string state) {
@@ -209,7 +184,6 @@ vector<string> find8Neighbors(string state) {
 }
 
 int to_decimal(char hexadecimal) {
-
     int num;
     stringstream ss;
     ss << std::hex << hexadecimal;
